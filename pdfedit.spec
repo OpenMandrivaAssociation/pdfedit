@@ -21,7 +21,11 @@ Editor for manipulating PDF documents.
 %setup -q
 
 %build
+%ifarch x86_64
+export QMAKESPEC=/usr/lib/qt3/mkspecs/linux-g++-64
+%else
 export QMAKESPEC=/usr/lib/qt3/mkspecs/linux-g++-32
+%endif
 %configure 
 %make  
 
