@@ -11,7 +11,6 @@ Group: 		Publishing
 Source: 	%{name}-%{version}.tar.bz2
 URL: 		http://pdfedit.petricek.net
 Requires: 	qt3
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-buildroot
 BuildRequires: 	qt3-devel, boost-devel
 
 %description
