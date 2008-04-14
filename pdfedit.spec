@@ -1,5 +1,5 @@
 %define name	pdfedit
-%define version	0.3.2
+%define version	0.4.1
 %define release 1
 
 Summary: 	Editor for manipulating PDF documents
