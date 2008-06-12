@@ -54,11 +54,15 @@ mkdir -p %{buildroot}%{_iconsdir}/{mini,large}
 %__install -m644 src/gui/icon/pdfedit_icon_16.png %{buildroot}%{_miconsdir}/pdfedit.png
 %__install -m644 src/gui/icon/pdfedit_icon_48.png %{buildroot}%{_liconsdir}/pdfedit.png
 
+%if %mdkversion < 200900
 %post
 %{update_menus}
+%endif
 
+%if %mdkversion < 200900
 %postun
 %{clean_menus}
+%endif
 
 %clean
 %__rm -rf %{buildroot}
