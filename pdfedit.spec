@@ -1,21 +1,22 @@
-%define name	pdfedit
-%define version	0.4.1
-%define release 1
-
-Summary: 	Editor for manipulating PDF documents
-Name: 		%{name}
-Version: 	%{version}
-Release: 	%mkrel %{release}
-License: 	GPL
-Group: 		Publishing
-Source: 	%{name}-%{version}.tar.bz2
-URL: 		http://pdfedit.petricek.net
-Requires: 	qt3
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-buildroot
-BuildRequires: 	qt3-devel, boost-devel
+Summary:	Editor for manipulating PDF documents
+Name:		pdfedit
+Version:	0.4.1
+Release:	%mkrel 1
+License:	GPLv2
+Group:		Publishing
+URL: 		http://sourceforge.net/projects/pdfedit
+Source: 	http://downloads.sourceforge.net/pdfedit/%{name}-%{version}.tar.bz2
+Requires:	qt3
+BuildRequires:	qt3-devel
+BuildRequires:	boost-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
-Editor for manipulating PDF documents.
+Free editor for PDF documents.Complete editing of PDF 
+documents is possible with PDFedit. You can change raw 
+pdf objects (for advanced users) or use many gui functions.
+Functionality can be easily extended using a scripting 
+language (ECMAScript).
 
 %prep
 %setup -q
@@ -26,17 +27,17 @@ export QMAKESPEC=/usr/lib/qt3/mkspecs/linux-g++-64
 %else
 export QMAKESPEC=/usr/lib/qt3/mkspecs/linux-g++-32
 %endif
-%configure 
+%configure2_5x
 %make  
 
 %install
-%__rm -rf %{buildroot}
+rm -rf %{buildroot}
 
-%__install -d -m 0755 $%{buildroot}{%{_bindir},%{_libdir},%{_datadir}}
-%make install INSTALL_ROOT=%{buildroot}
+install -d -m 0755 $%{buildroot}{%{_bindir},%{_libdir},%{_datadir}}
+%makeinstall_std
 
 mkdir -p %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
+cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
 Name=PDFedit
 Comment=Editor for manipulating PDF documents
@@ -49,10 +50,13 @@ MimeType=application/x-pdf;application/pdf;
 Categories=X-MandrivaLinux-Office-Publishing;Graphics;Publishing;
 EOF
 
-mkdir -p %{buildroot}%{_iconsdir}/{mini,large}
-%__install -m644 src/gui/icon/pdfedit_icon_32.png %{buildroot}%{_iconsdir}/pdfedit.png
-%__install -m644 src/gui/icon/pdfedit_icon_16.png %{buildroot}%{_miconsdir}/pdfedit.png
-%__install -m644 src/gui/icon/pdfedit_icon_48.png %{buildroot}%{_liconsdir}/pdfedit.png
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x1632x32,}
+for i in 16 32 48; do
+
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps
+
+install -m644 src/gui/icon/pdfedit_icon_$i.png %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps/pdfedit.png
+done
 
 %if %mdkversion < 200900
 %post
@@ -65,7 +69,7 @@ mkdir -p %{buildroot}%{_iconsdir}/{mini,large}
 %endif
 
 %clean
-%__rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files 
 %defattr(-,root,root)
@@ -74,7 +78,4 @@ mkdir -p %{buildroot}%{_iconsdir}/{mini,large}
 %{_datadir}/doc/pdfedit/*
 %{_datadir}/pdfedit/*
 %{_datadir}/applications/mandriva*
-%{_iconsdir}/pdfedit.png
-%{_miconsdir}/pdfedit.png
-%{_liconsdir}/pdfedit.png
-
+%{_iconsdir}/hicolor/*/apps/pdfedit.png
