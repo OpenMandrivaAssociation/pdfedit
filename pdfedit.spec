@@ -1,7 +1,7 @@
 Summary:	Editor for manipulating PDF documents
 Name:		pdfedit
 Version:	0.4.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2
 Group:		Publishing
 URL: 		http://sourceforge.net/projects/pdfedit
