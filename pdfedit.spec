@@ -9,6 +9,7 @@ Source: 	http://downloads.sourceforge.net/pdfedit/%{name}-%{version}.tar.bz2
 Requires:	qt3
 BuildRequires:	qt3-devel
 BuildRequires:	boost-devel
+BuildRequires:	libt1lib-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
@@ -23,12 +24,19 @@ language (ECMAScript).
 
 %build
 %ifarch x86_64
-export QMAKESPEC=/usr/lib/qt3/mkspecs/linux-g++-64
+export QMAKESPEC=%{qt3dir}/mkspecs/linux-g++-64
 %else
-export QMAKESPEC=/usr/lib/qt3/mkspecs/linux-g++-32
+export QMAKESPEC=%{qt3dir}/mkspecs/linux-g++-32
 %endif
-%configure2_5x
-%make  
+
+export QTDIR=%{qt3dir}
+
+%configure2_5x \
+	--enable-release \
+	--enable-stack-protector \
+	--enable-qt3 
+	 
+%make
 
 %install
 rm -rf %{buildroot}
