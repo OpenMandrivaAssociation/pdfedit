@@ -1,7 +1,7 @@
 Summary:	Editor for manipulating PDF documents
 Name:		pdfedit
-Version:	0.4.1
-Release:	%mkrel 3
+Version:	0.4.2
+Release:	%mkrel 1
 License:	GPLv2
 Group:		Publishing
 URL: 		http://sourceforge.net/projects/pdfedit
@@ -13,8 +13,7 @@ BuildRequires:	libt1lib-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
-Free editor for PDF documents.Complete editing of PDF 
-documents is possible with PDFedit. You can change raw 
+PDFedit is a free editor for PDF documents. You can change raw 
 pdf objects (for advanced users) or use many gui functions.
 Functionality can be easily extended using a scripting 
 language (ECMAScript).
@@ -34,15 +33,15 @@ export QTDIR=%{qt3dir}
 %configure2_5x \
 	--enable-release \
 	--enable-stack-protector \
-	--enable-qt3 
-	 
+	--enable-qt3 \
+	--with-parallel-make=auto
 %make
 
 %install
-rm -rf %{buildroot}
+%__rm -rf %{buildroot}
 
-install -d -m 0755 $%{buildroot}{%{_bindir},%{_libdir},%{_datadir}}
-%makeinstall_std
+%__install -d -m 0755 $%{buildroot}{%{_bindir},%{_libdir},%{_datadir}}
+make INSTALL_ROOT=%{buildroot} install
 
 mkdir -p %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
@@ -58,12 +57,9 @@ MimeType=application/x-pdf;application/pdf;
 Categories=X-MandrivaLinux-Office-Publishing;Graphics;Publishing;
 EOF
 
-mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x1632x32,}
 for i in 16 32 48; do
-
-mkdir -p %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps
-
-install -m644 src/gui/icon/pdfedit_icon_$i.png %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps/pdfedit.png
+    mkdir -p %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps
+    %__install -m 644 src/gui/icon/pdfedit_icon_$i.png %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps/pdfedit.png
 done
 
 %if %mdkversion < 200900
@@ -77,7 +73,7 @@ done
 %endif
 
 %clean
-rm -rf %{buildroot}
+%__rm -rf %{buildroot}
 
 %files 
 %defattr(-,root,root)
@@ -85,5 +81,5 @@ rm -rf %{buildroot}
 %{_mandir}/man1/pdfedit.*
 %{_datadir}/doc/pdfedit/*
 %{_datadir}/pdfedit/*
-%{_datadir}/applications/mandriva*
+%{_datadir}/applications/pdfedit.*
 %{_iconsdir}/hicolor/*/apps/pdfedit.png
