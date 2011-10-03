@@ -1,7 +1,7 @@
 Summary:	Editor for manipulating PDF documents
 Name:		pdfedit
 Version:	0.4.5
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2
 Group:		Publishing
 URL: 		http://sourceforge.net/projects/pdfedit
@@ -54,7 +54,7 @@ Terminal=false
 Type=Application
 StartupNotify=true
 MimeType=application/x-pdf;application/pdf;
-Categories=X-MandrivaLinux-Office-Publishing;Graphics;Publishing;
+Categories=X-MandrivaLinux-Office-Publishing;Office;Publishing;
 EOF
 
 for i in 16 32 48; do
