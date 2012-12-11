@@ -1,16 +1,18 @@
+%define _disable_ld_no_undefined 1
+
 Summary:	Editor for manipulating PDF documents
 Name:		pdfedit
 Version:	0.4.5
-Release:	%mkrel 2
+Release:	3
 License:	GPLv2
 Group:		Publishing
-URL: 		http://sourceforge.net/projects/pdfedit
-Source: 	http://downloads.sourceforge.net/pdfedit/%{name}-%{version}.tar.bz2
-Requires:	qt3
+URL:		http://sourceforge.net/projects/pdfedit
+Source:		http://downloads.sourceforge.net/pdfedit/%{name}-%{version}.tar.bz2
+Patch0:		pdfedit-0.4.5-gcc4.7.patch
+Patch1:		pdfedit-0.4.5-undef.patch
 BuildRequires:	qt3-devel
 BuildRequires:	boost-devel
 BuildRequires:	libt1lib-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 PDFedit is a free editor for PDF documents. You can change raw 
@@ -20,8 +22,11 @@ language (ECMAScript).
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
+autoconf
 %ifarch x86_64
 export QMAKESPEC=%{qt3dir}/mkspecs/linux-g++-64
 %else
@@ -38,9 +43,7 @@ export QTDIR=%{qt3dir}
 %make
 
 %install
-%__rm -rf %{buildroot}
-
-%__install -d -m 0755 $%{buildroot}{%{_bindir},%{_libdir},%{_datadir}}
+install -d -m 0755 $%{buildroot}{%{_bindir},%{_libdir},%{_datadir}}
 make INSTALL_ROOT=%{buildroot} install
 
 mkdir -p %{buildroot}%{_datadir}/applications
@@ -59,27 +62,15 @@ EOF
 
 for i in 16 32 48; do
     mkdir -p %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps
-    %__install -m 644 src/gui/icon/pdfedit_icon_$i.png %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps/pdfedit.png
+    install -m 644 src/gui/icon/pdfedit_icon_$i.png %{buildroot}%{_iconsdir}/hicolor/"$i"x"$i"/apps/pdfedit.png
 done
 
-%if %mdkversion < 200900
-%post
-%{update_menus}
-%endif
-
-%if %mdkversion < 200900
-%postun
-%{clean_menus}
-%endif
-
-%clean
-%__rm -rf %{buildroot}
-
-%files 
-%defattr(-,root,root)
+%files
 %{_bindir}/pdfedit
 %{_mandir}/man1/pdfedit.*
 %{_datadir}/doc/pdfedit/*
 %{_datadir}/pdfedit/*
 %{_datadir}/applications/pdfedit.*
 %{_iconsdir}/hicolor/*/apps/pdfedit.png
+
+

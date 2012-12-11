@@ -1,0 +1,80 @@
+diff -urN pdfedit-0.4.5/src/kernel/cobject2xpdf.cc pdfedit-0.4.5-patched/src/kernel/cobject2xpdf.cc
+--- pdfedit-0.4.5/src/kernel/cobject2xpdf.cc	2009-09-11 23:02:56.000000000 +1100
++++ pdfedit-0.4.5-patched/src/kernel/cobject2xpdf.cc	2012-11-17 23:55:23.000000000 +1100
+@@ -453,16 +453,16 @@
+ 				// Get Object at i-th position
+ 				array.arrayGetNF (i, obj.get());
+ 					
+-				shared_ptr<IProperty> cobj;
++				boost::shared_ptr<IProperty> cobj;
+ 				// Create CObject from it
+ 				if (isPdfValid(pdf))
+ 				{
+ 					hasValidRef (ip);
+-					cobj = shared_ptr<IProperty> (createObjFromXpdfObj (pdf, *obj, ip.getIndiRef()));
++					cobj = boost::shared_ptr<IProperty> (createObjFromXpdfObj (pdf, *obj, ip.getIndiRef()));
+ 
+ 				}else
+ 				{
+-					cobj = shared_ptr<IProperty> (createObjFromXpdfObj (*obj));
++					cobj = boost::shared_ptr<IProperty> (createObjFromXpdfObj (*obj));
+ 				}
+ 
+ 				if (cobj)
+@@ -504,12 +504,12 @@
+ 				obj->free ();
+ 				dict.dictGetValNF (i,obj.get());
+ 
+-				shared_ptr<IProperty> cobj;
++				boost::shared_ptr<IProperty> cobj;
+ 				// Create CObject from it
+ 				if (isPdfValid (pdf))
+-					cobj = shared_ptr<IProperty> (createObjFromXpdfObj (pdf, *obj, ip.getIndiRef()));
++					cobj = boost::shared_ptr<IProperty> (createObjFromXpdfObj (pdf, *obj, ip.getIndiRef()));
+ 				else
+-					cobj = shared_ptr<IProperty> (createObjFromXpdfObj (*obj));
++					cobj = boost::shared_ptr<IProperty> (createObjFromXpdfObj (*obj));
+ 
+ 				if (cobj)
+ 				{
+@@ -727,6 +727,13 @@
+ {
+ 	/*assert (!"operation not permitted...");*//*THIS IS FORBIDDEN IN THE CALLER*/
+ }
++template void simpleValueFromXpdfObj<pBool, bool&> (const Object&, bool& val);
++template void simpleValueFromXpdfObj<pInt, int&> (const Object&,  int& val);
++template void simpleValueFromXpdfObj<pReal, double&> (const Object&, double& val);
++template void simpleValueFromXpdfObj<pString, string&> (const Object&, string& val);
++template void simpleValueFromXpdfObj<pName, string&> (const Object&, string& val);
++template void simpleValueFromXpdfObj<pRef, IndiRef&> (const Object&, IndiRef& val);
++
+ 
+ 
+ //
+@@ -773,7 +780,7 @@
+ 		string key = dict.dictGetKey (i);
+ 		dict.dictGetValNF (i,obj.get());
+ 		// Make IProperty from value
+-		scoped_ptr<IProperty> cobj (createObjFromXpdfObj (*obj));
++		boost::scoped_ptr<IProperty> cobj (createObjFromXpdfObj (*obj));
+ 		if (cobj)
+ 		{
+ 			// Store it in the dictionary
+@@ -813,7 +820,7 @@
+ 	memcpy(pStr, str.c_str(), len);
+ 	pStr[len] = '\0';
+ 					
+-	scoped_ptr<Parser> parser(
++	boost::scoped_ptr<Parser> parser(
+ 			new Parser (xref, 
+ 				new Lexer (xref,
+ 					new MemStream (pStr, 0, static_cast<int>(len), &dct, gTrue)
+@@ -1021,7 +1028,7 @@
+ 	// for Dict -> String conversion
+ 	// initDict increases streamDict's reference thus we need to
+ 	// decrease it back by free
+-	shared_ptr< ::Object> streamDictObj(XPdfObjectFactory::getInstance(), xpdf::object_deleter());
++	boost::shared_ptr< ::Object> streamDictObj(XPdfObjectFactory::getInstance(), xpdf::object_deleter());
+ 	streamDictObj->initDict((Dict *)streamObject.streamGetDict());
+ 	std::string dict;
+ 	xpdfObjToString(*streamDictObj, dict);

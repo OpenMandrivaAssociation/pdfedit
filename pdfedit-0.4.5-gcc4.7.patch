@@ -1,0 +1,21 @@
+diff -urN pdfedit-0.4.5/src/gui/rect2Darray.h pdfedit-0.4.5-patched/src/gui/rect2Darray.h
+--- pdfedit-0.4.5/src/gui/rect2Darray.h	2009-04-07 02:24:50.000000000 +1100
++++ pdfedit-0.4.5-patched/src/gui/rect2Darray.h	2012-11-04 15:03:35.986476953 +1100
+@@ -305,7 +305,7 @@
+ 		minY = std::min( minY, item->top() );
+ 		maxY = std::max( maxY, item->bottom() );
+ 	}
+-	append( item );
++	this->append( item );
+ }
+ 
+ template <typename T>
+@@ -461,7 +461,7 @@
+ 	if (toAppend) {
+ 		current = new RectArray<T>();
+ 		current->myAppend( bbox );
+-		append( current );
++		this->append( current );
+ 	}
+ }
+ 
