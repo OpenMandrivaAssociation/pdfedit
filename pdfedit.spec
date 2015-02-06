@@ -3,7 +3,7 @@
 Summary:	Editor for manipulating PDF documents
 Name:		pdfedit
 Version:	0.4.5
-Release:	3
+Release:	4
 License:	GPLv2
 Group:		Publishing
 URL:		http://sourceforge.net/projects/pdfedit
