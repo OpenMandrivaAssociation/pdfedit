@@ -6,7 +6,7 @@ Version:	0.4.5
 Release:	4
 License:	GPLv2
 Group:		Publishing
-URL:		http://sourceforge.net/projects/pdfedit
+URL:		https://sourceforge.net/projects/pdfedit
 Source:		http://downloads.sourceforge.net/pdfedit/%{name}-%{version}.tar.bz2
 Patch0:		pdfedit-0.4.5-gcc4.7.patch
 Patch1:		pdfedit-0.4.5-undef.patch
