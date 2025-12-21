@@ -10,6 +10,11 @@ URL:		https://sourceforge.net/projects/pdfedit
 Source:		http://downloads.sourceforge.net/pdfedit/%{name}-%{version}.tar.bz2
 Patch0:		pdfedit-0.4.5-gcc4.7.patch
 Patch1:		pdfedit-0.4.5-undef.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	qt3-devel
 BuildRequires:	boost-devel
 BuildRequires:	libt1lib-devel
